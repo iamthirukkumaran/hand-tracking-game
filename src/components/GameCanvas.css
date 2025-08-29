@@ -1,0 +1,61 @@
+/* Container for the game */
+#game-container {
+  position: relative;
+  width: 90vw; /* responsive width */
+  max-width: 600px; /* prevent too large on desktop */
+  height: 60vh; /* responsive height */
+  margin: 0 auto;
+}
+
+/* Make p5 canvas fill container */
+#game-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+}
+
+/* Scoreboard */
+.scoreboard {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-size: 5vw; /* responsive font size */
+  font-weight: bold;
+  padding: 0.5em 1em;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+  z-index: 10;
+}
+
+/* Pause overlay */
+.paused {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: 7vw; /* responsive font size */
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 1em 2em;
+  border-radius: 12px;
+  display: none;
+  text-align: center;
+  z-index: 10;
+}
+
+/* Optional: adjust for small devices */
+@media (max-width: 480px) {
+  .scoreboard {
+    font-size: 6vw;
+    padding: 0.3em 0.8em;
+  }
+  .paused {
+    font-size: 10vw;
+    padding: 0.8em 1.5em;
+  }
+}
