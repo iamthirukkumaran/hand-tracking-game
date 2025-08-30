@@ -1,61 +1,59 @@
-/* Container for the game */
-#game-container {
+/* Full page background */
+body, html, #root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #2b5876, #4e4376);
+  font-family: "Poppins", sans-serif;
+  overflow: hidden;
+}
+
+/* Container for canvas and overlays */
+.game-container {
   position: relative;
-  width: 90vw; /* responsive width */
-  max-width: 600px; /* prevent too large on desktop */
-  height: 60vh; /* responsive height */
-  margin: 0 auto;
+  width: 100%;
+  max-width: 500px;
+  margin: auto;
+  display: block;
 }
 
-/* Make p5 canvas fill container */
-#game-container canvas {
-  width: 100% !important;
-  height: 100% !important;
-  border-radius: 15px;
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
-}
-
-/* Scoreboard */
+/* Scoreboard at top center */
 .scoreboard {
   position: absolute;
-  top: 10px;
+  top: 20px;
   left: 50%;
   transform: translateX(-50%);
+  padding: 10px 25px;
   background: rgba(0, 0, 0, 0.5);
+  border-radius: 15px;
   color: #fff;
-  font-size: 5vw; /* responsive font size */
+  font-size: 20px;
   font-weight: bold;
-  padding: 0.5em 1em;
-  border-radius: 12px;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
   z-index: 10;
 }
 
-/* Pause overlay */
+/* Pause message in center */
 .paused {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: #fff;
-  font-size: 7vw; /* responsive font size */
+  color: white;
+  font-size: 28px;
   font-weight: bold;
-  background: rgba(0, 0, 0, 0.6);
-  padding: 1em 2em;
-  border-radius: 12px;
+  background: rgba(0,0,0,0.6);
+  padding: 20px 40px;
+  border-radius: 15px;
   display: none;
-  text-align: center;
   z-index: 10;
 }
 
-/* Optional: adjust for small devices */
-@media (max-width: 480px) {
-  .scoreboard {
-    font-size: 6vw;
-    padding: 0.3em 0.8em;
-  }
-  .paused {
-    font-size: 10vw;
-    padding: 0.8em 1.5em;
-  }
+/* Canvas styling */
+canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+  box-shadow: 0px 0px 30px rgba(0, 255, 255, 0.4);
 }

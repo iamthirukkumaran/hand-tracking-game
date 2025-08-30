@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from "react";
 import p5 from "p5";
 import { Hands } from "@mediapipe/hands";
 import { Camera } from "@mediapipe/camera_utils";
-import "./GameCanvas.css"; // optional CSS
+import "./GameCanvas.css";
 
 const GameCanvas = () => {
   const scoreRef = useRef(null);
@@ -14,6 +14,7 @@ const GameCanvas = () => {
   useEffect(() => {
     let catcherX = 200;
     let balls = [];
+    let particles = []; // ✨ particles for splash
     let score = 0;
     let video;
     let hands;
@@ -22,7 +23,7 @@ const GameCanvas = () => {
     let lastHandSeen = 0;
     let ballInterval = null;
 
-    const sensitivity = 0.4; // increase for faster response (0.1–1.0)
+    const sensitivity = 0.4;
 
     const sketch = (p) => {
       p.setup = () => {
@@ -82,7 +83,7 @@ const GameCanvas = () => {
         p.rect(catcherX - 50, p.height - 30, 100, 20, 10);
         p.pop();
 
-        // Draw and move balls
+        // Draw balls
         for (let i = balls.length - 1; i >= 0; i--) {
           const b = balls[i];
 
@@ -96,7 +97,7 @@ const GameCanvas = () => {
           if (!gamePaused) {
             b.y += 4;
 
-            // Collision
+            // Collision with catcher → spawn splash particles
             if (
               b.y > p.height - 40 &&
               b.x > catcherX - 50 &&
@@ -104,21 +105,48 @@ const GameCanvas = () => {
             ) {
               score++;
               if (scoreRef.current) scoreRef.current.innerText = "Score: " + score;
+
+              // ✨ Spawn particles
+              for (let j = 0; j < 8; j++) {
+                particles.push({
+                  x: b.x,
+                  y: b.y,
+                  vx: p.random(-2, 2),
+                  vy: p.random(-3, -1),
+                  alpha: 255,
+                });
+              }
+
               balls.splice(i, 1);
             } else if (b.y > p.height) {
               balls.splice(i, 1);
             }
           }
         }
+
+        // Draw particles
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const par = particles[i];
+          p.push();
+          p.noStroke();
+          p.fill(`rgba(0,255,255,${par.alpha / 255})`);
+          p.ellipse(par.x, par.y, 6, 6);
+          p.pop();
+
+          par.x += par.vx;
+          par.y += par.vy;
+          par.alpha -= 8;
+
+          if (par.alpha <= 0) particles.splice(i, 1);
+        }
       };
 
       function gotHands(results) {
         if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
           const hand = results.multiHandLandmarks[0];
-          const x = hand[8].x; // index finger tip
+          const x = hand[8].x;
           const targetX = x * p.width;
 
-          // Smooth high-sensitivity movement
           catcherX += (targetX - catcherX) * sensitivity;
 
           lastHandSeen = p.millis();
@@ -127,14 +155,14 @@ const GameCanvas = () => {
             gamePaused = false;
             if (pausedRef.current) pausedRef.current.style.display = "none";
 
-            // Spawn first ball immediately
+            // Spawn first ball
             balls.push({
               x: p.random(20, 480),
               y: 0,
               color: p.color(p.random(255), p.random(255), p.random(255)),
             });
 
-            // Start spawning balls continuously
+            // Start continuous spawning
             if (!ballInterval) {
               ballInterval = setInterval(() => {
                 balls.push({
@@ -162,20 +190,16 @@ const GameCanvas = () => {
 
   return (
     <div id="game-container" style={{ margin: "0 auto", position: "relative" }}>
-  {/* Canvas will be appended here by p5 */}
-  <div ref={canvasParentRef}></div>
+      <div ref={canvasParentRef}></div>
 
-  {/* Scoreboard */}
-  <div className="scoreboard" ref={scoreRef}>
-    Score: 0
-  </div>
+      <div className="scoreboard" ref={scoreRef}>
+        Score: 0
+      </div>
 
-  {/* Pause overlay */}
-  <div className="paused" ref={pausedRef}>
-    ⏸ Game Paused (Show your hand to start)
-  </div>
-</div>
-
+      <div className="paused" ref={pausedRef}>
+        ⏸ Game Paused (Show your hand to start)
+      </div>
+    </div>
   );
 };
 
