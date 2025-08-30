@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/hand-tracking-game/static/css/main.df4c4f6b.css",
-    "main.js": "/hand-tracking-game/static/js/main.ca0383ca.js",
+    "main.js": "/hand-tracking-game/static/js/main.edab165c.js",
     "index.html": "/hand-tracking-game/index.html",
     "main.df4c4f6b.css.map": "/hand-tracking-game/static/css/main.df4c4f6b.css.map",
-    "main.ca0383ca.js.map": "/hand-tracking-game/static/js/main.ca0383ca.js.map"
+    "main.edab165c.js.map": "/hand-tracking-game/static/js/main.edab165c.js.map"
   },
   "entrypoints": [
     "static/css/main.df4c4f6b.css",
-    "static/js/main.ca0383ca.js"
+    "static/js/main.edab165c.js"
   ]
 }
